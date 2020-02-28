@@ -15,18 +15,22 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	private static final long serialVersionUID = -1903024301742645276L;
 
-	public static final int WIDTH = 240;
+	public static final int WIDTH = 160;
 	public static final int HEIGHT = 120;
 	public static final int SCALE = 3;
 
-	Player player;
+	static Player player;
+	static Enemy enemy;
+	static Ball ball;
 
 	public BufferedImage layer = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 	public Game() {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		this.addKeyListener(this);
-		player = new Player(100, HEIGHT - 10);
+		player = new Player(100, HEIGHT - 5);
+		enemy = new Enemy(100, 0);
+		ball = new Ball(100, HEIGHT / 2 - 1);
 	}
 
 	public static void main(String[] args) {
@@ -44,6 +48,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
 	public void tick() {
 		player.tick();
+		enemy.tick();
+		ball.tick();
 	}
 
 	public void render() {
@@ -56,6 +62,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		player.render(g);
+		enemy.render(g);
+		ball.render(g);
 		g = bs.getDrawGraphics();
 		g.drawImage(layer, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 		bs.show();
